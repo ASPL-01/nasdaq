@@ -51,4 +51,16 @@ public class UserServiceTest {
     public void shouldNotCreateUserEmailNull() throws Exception {
         User u = this.service.create(null);
     }
+
+    @Test
+    public void shouldDepositFunds() throws Exception {
+        this.service.deposit(1, 100);
+        double balance = this.service.deposit(1, 50);
+        assertEquals(150, balance, 0.1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotDepositFundsBadUserId() throws Exception {
+        this.service.deposit(99, 100);
+    }
 }

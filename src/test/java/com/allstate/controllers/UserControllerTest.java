@@ -102,4 +102,41 @@ public class UserControllerTest {
         // assertion
         this.mvc.perform(request);
     }
+
+    @Test
+    public void shouldDepositFunds() throws Exception {
+        // stub
+        when(this.service.deposit(1, 50.0)).thenReturn(250.0);
+
+        // request
+        MockHttpServletRequestBuilder request = post("/users/1/deposit/50");
+
+        // assertion
+        this.mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance", closeTo(250, 0.1)));
+    }
+
+    @Test
+    public void shouldNotDepositFundsNotAnId() throws Exception {
+        // request
+        MockHttpServletRequestBuilder request = post("/users/bad/deposit/50");
+
+        // assertion
+        this.mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void shouldNotDepositFundsNotAnAmount() throws Exception {
+        // request
+        MockHttpServletRequestBuilder request = post("/users/1/deposit/bad");
+
+        // assertion
+        this.mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
 }
