@@ -44,6 +44,7 @@ public class UserControllerTest {
         User user = new User();
         user.setId(1);
         user.setEmail("alice@gmail.com");
+        user.setBalance(0);
         when(this.service.create("alice@gmail.com")).thenReturn(user);
 
         // request
@@ -56,6 +57,7 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.balance", closeTo(0, 0.1)))
                 .andExpect(jsonPath("$.email", is("alice@gmail.com")));
     }
 
