@@ -1,6 +1,7 @@
 package com.allstate.services;
 
 import com.allstate.entities.User;
+import com.allstate.enums.Funds;
 import com.allstate.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,21 @@ public class UserService {
         return this.repository.save(new User(email));
     }
 
-    public double deposit(int id, double amount){
+    public double changeFunds(int id, double amount, Funds funds){
+        User user = this.findUserById(id);
+        double balance = user.getBalance();
+        balance = funds == Funds.DEPOSIT ? balance + amount : balance - amount;
+        user.setBalance(balance);
+        this.repository.save(user);
+        return balance;
+    }
+
+    public User findUserById(int id){
         Optional<User> oUser = Optional.ofNullable(this.repository.findOne(id));
-        if(oUser.isPresent()){
-            User user = oUser.get();
-            double balance = user.getBalance();
-            balance += amount;
-            user.setBalance(balance);
-            this.repository.save(user);
-            return balance;
+        if(oUser.isPresent()) {
+            return oUser.get();
+        }else{
+            throw new IllegalArgumentException("User ID not found");
         }
-        throw new IllegalArgumentException("User ID not found");
     }
 }

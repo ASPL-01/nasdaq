@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Entity
@@ -52,6 +52,7 @@ public class User {
     }
 
     @Column(nullable = false)
+    @DecimalMin(value = "0")
     public double getBalance() {
         return balance;
     }

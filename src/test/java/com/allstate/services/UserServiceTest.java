@@ -1,6 +1,7 @@
 package com.allstate.services;
 
 import com.allstate.entities.User;
+import com.allstate.enums.Funds;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,13 +55,25 @@ public class UserServiceTest {
 
     @Test
     public void shouldDepositFunds() throws Exception {
-        this.service.deposit(1, 100);
-        double balance = this.service.deposit(1, 50);
-        assertEquals(150, balance, 0.1);
+        double balance = this.service.changeFunds(1, 50, Funds.DEPOSIT);
+        assertEquals(50, balance, 0.1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotDepositFundsBadUserId() throws Exception {
-        this.service.deposit(99, 100);
+        this.service.changeFunds(99, 100, Funds.DEPOSIT);
+    }
+
+    @Test
+    public void shouldWithdrawFunds() throws Exception {
+        this.service.changeFunds(1, 100, Funds.DEPOSIT);
+        double balance = this.service.changeFunds(1, 25, Funds.WITHDRAW);
+        assertEquals(75, balance, 0.1);
+    }
+
+    @Test(expected = org.springframework.transaction.TransactionSystemException.class)
+    public void shouldNotWithdrawFundsInsufficientFunds() throws Exception {
+        this.service.changeFunds(1, 100, Funds.DEPOSIT);
+        double balance = this.service.changeFunds(1, 125, Funds.WITHDRAW);
     }
 }

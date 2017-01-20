@@ -1,6 +1,7 @@
 package com.allstate.controllers;
 
 import com.allstate.entities.User;
+import com.allstate.enums.Funds;
 import com.allstate.services.UserService;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -106,7 +107,7 @@ public class UserControllerTest {
     @Test
     public void shouldDepositFunds() throws Exception {
         // stub
-        when(this.service.deposit(1, 50.0)).thenReturn(250.0);
+        when(this.service.changeFunds(1, 50.0, Funds.DEPOSIT)).thenReturn(250.0);
 
         // request
         MockHttpServletRequestBuilder request = post("/users/1/deposit/50");
@@ -138,5 +139,20 @@ public class UserControllerTest {
         this.mvc.perform(request)
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void shouldWithrawFunds() throws Exception {
+        // stub
+        when(this.service.changeFunds(1, 50.0, Funds.WITHDRAW)).thenReturn(15.0);
+
+        // request
+        MockHttpServletRequestBuilder request = post("/users/1/withdraw/50");
+
+        // assertion
+        this.mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance", closeTo(15, 0.1)));
     }
 }
