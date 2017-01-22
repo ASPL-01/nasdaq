@@ -1,5 +1,6 @@
 package com.allstate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -79,6 +80,7 @@ public class User {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public List<Transaction> getTransactions() {
         return transactions;
     }

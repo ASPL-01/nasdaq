@@ -2,6 +2,7 @@ package com.allstate.services;
 
 import com.allstate.entities.User;
 import com.allstate.enums.Funds;
+import com.allstate.models.Position;
 import com.allstate.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class UserService {
         user.setBalance(balance);
         this.userRepository.save(user);
         return balance;
+    }
+
+    public Position getPosition(int id){
+        User user = this.findUserById(id);
+        return new Position();
     }
 }
