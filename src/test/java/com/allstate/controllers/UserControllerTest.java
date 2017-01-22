@@ -62,48 +62,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email", is("alice@gmail.com")));
     }
 
-    @Test(expected = org.springframework.web.util.NestedServletException.class)
-    public void shouldNotCreateUserEmptyEmail() throws Exception {
-        // stub
-        when(this.service.create(anyString())).thenThrow(new IllegalArgumentException("Email is Required"));
-
-        // request
-        MockHttpServletRequestBuilder request = post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\": \"\"}");
-
-        // assertion
-        this.mvc.perform(request);
-    }
-
-    @Test(expected = org.springframework.web.util.NestedServletException.class)
-    public void shouldNotCreateUserNoEmailKey() throws Exception {
-        // stub
-        when(this.service.create(anyString())).thenThrow(new IllegalArgumentException("Email is Required"));
-
-        // request
-        MockHttpServletRequestBuilder request = post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{}");
-
-        // assertion
-        this.mvc.perform(request);
-    }
-
-    @Test(expected = org.springframework.web.util.NestedServletException.class)
-    public void shouldNotCreateUserDuplicateEmail() throws Exception {
-        // stub
-        when(this.service.create(anyString())).thenThrow(new IllegalArgumentException("Duplicate Email"));
-
-        // request
-        MockHttpServletRequestBuilder request = post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\": \"alice@gmail.com\"}");
-
-        // assertion
-        this.mvc.perform(request);
-    }
-
     @Test
     public void shouldDepositFunds() throws Exception {
         // stub
