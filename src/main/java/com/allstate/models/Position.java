@@ -22,6 +22,10 @@ public class Position {
     public List<PositionDetail> getPositionDetails() {
         return positionDetails;
     }
+    public void addPositionDetail(String symbol, int shares, double amount){
+        PositionDetail positionDetail = new PositionDetail(symbol, shares, amount);
+        this.positionDetails.add(positionDetail);
+    }
 
     private class PositionDetail{
         private String symbol;

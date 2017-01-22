@@ -8,7 +8,8 @@ set FOREIGN_KEY_CHECKS = 1;
 insert into `users` (`email`, `balance`)
 values
   ('bob@aol.com', 10),
-  ('sue@aol.com', 50200);
+  ('sue@aol.com', 50200),
+  ('car@aol.com', 210);
 
 insert into `transactions` (`action`, `symbol`, `quantity`, `amount`, `user_id`)
 values

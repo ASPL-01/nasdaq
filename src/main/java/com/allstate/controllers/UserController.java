@@ -2,6 +2,7 @@ package com.allstate.controllers;
 
 import com.allstate.entities.User;
 import com.allstate.enums.Funds;
+import com.allstate.models.Position;
 import com.allstate.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,10 @@ public class UserController {
         double balance = this.userService.changeFunds(id, amount, Funds.WITHDRAW);
         json.put("balance", balance);
         return json;
+    }
+
+    @RequestMapping(value = "/{id}/position", method = RequestMethod.GET)
+    public Position getPosition(@PathVariable int id){
+        return this.userService.getPosition(id);
     }
 }

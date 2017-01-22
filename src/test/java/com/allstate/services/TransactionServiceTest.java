@@ -3,6 +3,7 @@ package com.allstate.services;
 import com.allstate.entities.Transaction;
 import com.allstate.entities.User;
 import com.allstate.enums.Action;
+import com.allstate.models.Position;
 import com.allstate.models.Stock;
 import org.junit.After;
 import org.junit.Before;
