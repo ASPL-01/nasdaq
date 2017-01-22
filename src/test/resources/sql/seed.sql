@@ -12,11 +12,15 @@ values
 
 insert into `transactions` (`action`, `symbol`, `quantity`, `amount`, `user_id`)
 values
-  ('BUY', 'AAPL', 3, 250.5, 1),
-  ('SELL', 'GE', 2, 120.5, 1),
-  ('BUY', 'AMZN', 5, 460.5, 1),
-  ('SELL', 'MSFT', 11, 570.5, 1),
-  ('BUY', 'GOOG', 6, 290.5, 1),
-  ('SELL', 'IBM', 9, 1150.5, 2),
-  ('BUY', 'ALL', 8, 9850.5, 2),
-  ('BUY', 'CSCO', 4, 2420.5, 2);
+  ('BUY', 'AAPL', 9, 250.5, 1),
+  ('BUY', 'AAPL', 7, 120.5, 1),
+  ('BUY', 'GOOG', 5, 290.5, 1),
+  ('BUY', 'AMZN', 3, 460.5, 1),
+  ('SELL', 'AAPL', 1, 570.5, 1),
+  ('SELL', 'AAPL', 1, 570.5, 1),
+
+  ('BUY', 'AAPL', 11, 9850.5, 2),
+  ('BUY', 'AAPL', 12, 9850.5, 2),
+  ('BUY', 'IBM', 13, 1150.5, 2),
+  ('BUY', 'ALL', 14, 9850.5, 2),
+  ('SELL', 'AAPL', 4, 2420.5, 2);

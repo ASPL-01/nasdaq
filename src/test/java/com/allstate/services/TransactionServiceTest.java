@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +43,7 @@ public class TransactionServiceTest {
     @Test
     public void shouldPurchaseStock() throws Exception {
         Transaction transaction = this.transactionService.buy(2, "AAPL", 5);
-        assertEquals(9, transaction.getId());
+        assertEquals(12, transaction.getId());
         assertEquals(2, transaction.getUser().getId());
         assertEquals(Action.BUY, transaction.getAction());
         assertEquals(5, transaction.getQuantity());
@@ -52,5 +54,23 @@ public class TransactionServiceTest {
     @Test(expected = com.allstate.exceptions.TransactionException.class)
     public void shouldNotPurchaseStockInsufficientFunds() throws Exception {
         Transaction transaction = this.transactionService.buy(1, "AAPL", 5);
+    }
+
+    @Test
+    public void shouldGetCountOfPurchasedShares() throws Exception {
+        int count = this.transactionService.countSharesPurchasedOrSoldBySymbol(1, Action.BUY, "AAPL");
+        assertEquals(16, count);
+    }
+
+    @Test
+    public void shouldGetCountOfSoldShares() throws Exception {
+        int count = this.transactionService.countSharesPurchasedOrSoldBySymbol(1, Action.SELL, "AAPL");
+        assertEquals(2, count);
+    }
+
+    @Test
+    public void shouldFindZeroCountForGivenSymbol() throws Exception {
+        int count = this.transactionService.countSharesPurchasedOrSoldBySymbol(1, Action.BUY, "BAD");
+        assertEquals(0, count);
     }
 }

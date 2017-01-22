@@ -10,6 +10,9 @@ import com.allstate.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 @Service
 public class TransactionService {
     private ITransactionRepository transactionRepository;
@@ -46,5 +49,10 @@ public class TransactionService {
         }else{
             throw new TransactionException("Not enough available funds.");
         }
+    }
+
+    public int countSharesPurchasedOrSoldBySymbol(int userId, Action action, String symbol){
+        Optional<BigDecimal> count = this.transactionRepository.countSharesPurchasedOrSoldBySymbol(userId, action.toString(), symbol);
+        return count.isPresent() ? count.get().intValue() : 0;
     }
 }
