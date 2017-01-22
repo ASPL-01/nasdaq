@@ -64,4 +64,27 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.action", is("BUY")))
                 .andExpect(jsonPath("$.symbol", is("AAPL")));
     }
+
+    @Test
+    public void shouldSellStock() throws Exception {
+        // stub
+        Transaction transaction = new Transaction();
+        transaction.setId(21);
+        transaction.setAction(Action.SELL);
+        transaction.setSymbol("AAPL");
+        transaction.setQuantity(5);
+        when(this.service.sell(1, "AAPL", 5)).thenReturn(transaction);
+
+        // request
+        MockHttpServletRequestBuilder request = post("/transactions/sell/1/AAPL/5");
+
+        // assertion
+        this.mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(21)))
+                .andExpect(jsonPath("$.quantity", is(5)))
+                .andExpect(jsonPath("$.action", is("SELL")))
+                .andExpect(jsonPath("$.symbol", is("AAPL")));
+    }
 }

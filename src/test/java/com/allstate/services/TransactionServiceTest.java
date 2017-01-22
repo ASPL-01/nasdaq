@@ -73,4 +73,20 @@ public class TransactionServiceTest {
         int count = this.transactionService.countSharesPurchasedOrSoldBySymbol(1, Action.BUY, "BAD");
         assertEquals(0, count);
     }
+
+    @Test
+    public void shouldSellStock() throws Exception {
+        Transaction transaction = this.transactionService.sell(1, "AAPL", 13);
+        assertEquals(12, transaction.getId());
+        assertEquals(1, transaction.getUser().getId());
+        assertEquals(Action.SELL, transaction.getAction());
+        assertEquals(13, transaction.getQuantity());
+        assertEquals("AAPL", transaction.getSymbol());
+        assertEquals(1300.0, transaction.getAmount(), 0.1);
+    }
+
+    @Test(expected = com.allstate.exceptions.TransactionException.class)
+    public void shouldNotSellStockInsufficientShares() throws Exception {
+        Transaction transaction = this.transactionService.sell(1, "AAPL", 50);
+    }
 }

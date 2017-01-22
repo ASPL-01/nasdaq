@@ -17,7 +17,12 @@ public class TransactionController {
     }
 
     @RequestMapping(value = "/buy/{userId}/{symbol}/{quantity}", method = RequestMethod.POST)
-    public Transaction create(@PathVariable int userId, @PathVariable String symbol, @PathVariable int quantity) throws TransactionException{
+    public Transaction buy(@PathVariable int userId, @PathVariable String symbol, @PathVariable int quantity) throws TransactionException{
         return this.transactionService.buy(userId, symbol, quantity);
+    }
+
+    @RequestMapping(value = "/sell/{userId}/{symbol}/{quantity}", method = RequestMethod.POST)
+    public Transaction sell(@PathVariable int userId, @PathVariable String symbol, @PathVariable int quantity) throws TransactionException{
+        return this.transactionService.sell(userId, symbol, quantity);
     }
 }

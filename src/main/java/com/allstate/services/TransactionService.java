@@ -42,7 +42,6 @@ public class TransactionService {
             double balance = user.getBalance() - purchasePrice;
             user.setBalance(balance);
             Transaction transaction = new Transaction(Action.BUY, symbol, quantity, purchasePrice, user);
-            transaction.setUser(user);
             this.transactionRepository.save(transaction);
             this.userRepository.save(user);
             return transaction;
@@ -54,5 +53,24 @@ public class TransactionService {
     public int countSharesPurchasedOrSoldBySymbol(int userId, Action action, String symbol){
         Optional<BigDecimal> count = this.transactionRepository.countSharesPurchasedOrSoldBySymbol(userId, action.toString(), symbol);
         return count.isPresent() ? count.get().intValue() : 0;
+    }
+
+    public Transaction sell(int userId, String symbol, int quantity) throws TransactionException{
+        User user = this.userRepository.findOne(userId);
+        Stock stock = quoteService.quote(symbol);
+        double sellPrice = stock.getLastPrice() * quantity;
+        int purchasedAmount = this.countSharesPurchasedOrSoldBySymbol(userId, Action.BUY, symbol);
+        int soldAmount = this.countSharesPurchasedOrSoldBySymbol(userId, Action.SELL, symbol);
+        int availableToSell = purchasedAmount - soldAmount;
+        if(quantity <= availableToSell) {
+            double balance = user.getBalance() + sellPrice;
+            user.setBalance(balance);
+            Transaction transaction = new Transaction(Action.SELL, symbol, quantity, sellPrice, user);
+            this.transactionRepository.save(transaction);
+            this.userRepository.save(user);
+            return transaction;
+        }else{
+            throw new TransactionException("Not enough shares available.");
+        }
     }
 }
