@@ -6,10 +6,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface ITransactionRepository extends CrudRepository<Transaction, Integer> {
     String sql1 = "select sum(quantity) from transactions where user_id = :userId and action = :action and symbol = :symbol";
     @Query(value = sql1, nativeQuery = true)
     public Optional<BigDecimal> countSharesPurchasedOrSoldBySymbol(@Param("userId") int userId, @Param("action") String action, @Param("symbol") String symbol);
+
+    String sql2 = "select distinct symbol from transactions where user_id = :userId";
+    @Query(value = sql2, nativeQuery = true)
+    public List<String> getUniqueStockSymbols(@Param("userId") int userId);
 }

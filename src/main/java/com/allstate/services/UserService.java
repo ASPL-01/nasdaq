@@ -47,9 +47,4 @@ public class UserService {
         this.userRepository.save(user);
         return balance;
     }
-
-    public Position getPosition(int id){
-        User user = this.findUserById(id);
-        return new Position();
-    }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,11 +51,6 @@ public class TransactionService {
         }
     }
 
-    public int countSharesPurchasedOrSoldBySymbol(int userId, Action action, String symbol){
-        Optional<BigDecimal> count = this.transactionRepository.countSharesPurchasedOrSoldBySymbol(userId, action.toString(), symbol);
-        return count.isPresent() ? count.get().intValue() : 0;
-    }
-
     public Transaction sell(int userId, String symbol, int quantity) throws TransactionException{
         User user = this.userRepository.findOne(userId);
         Stock stock = quoteService.quote(symbol);
@@ -72,5 +68,19 @@ public class TransactionService {
         }else{
             throw new TransactionException("Not enough shares available.");
         }
+    }
+
+    public int countSharesPurchasedOrSoldBySymbol(int userId, Action action, String symbol){
+        Optional<BigDecimal> count = this.transactionRepository.countSharesPurchasedOrSoldBySymbol(userId, action.toString(), symbol);
+        return count.isPresent() ? count.get().intValue() : 0;
+    }
+
+    public int countAvailableShares(int userId, String symbol){
+        return this.countSharesPurchasedOrSoldBySymbol(userId, Action.BUY, symbol) -
+                this.countSharesPurchasedOrSoldBySymbol(userId, Action.SELL, symbol);
+    }
+
+    public List<String> getUniqueStockSymbols(int userId){
+        return this.transactionRepository.getUniqueStockSymbols(userId);
     }
 }

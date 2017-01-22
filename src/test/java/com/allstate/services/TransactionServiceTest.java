@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -88,5 +89,23 @@ public class TransactionServiceTest {
     @Test(expected = com.allstate.exceptions.TransactionException.class)
     public void shouldNotSellStockInsufficientShares() throws Exception {
         Transaction transaction = this.transactionService.sell(1, "AAPL", 50);
+    }
+
+    @Test
+    public void shouldCountAvailableSharesOfStock() throws Exception {
+        int count = this.transactionService.countAvailableShares(1, "AAPL");
+        assertEquals(14, count);
+    }
+
+    @Test
+    public void shouldGetListOfUniqueStockSymbolsPerUser() throws Exception {
+        List<String> list = this.transactionService.getUniqueStockSymbols(1);
+        assertEquals(3, list.size());
+    }
+
+    @Test
+    public void shouldReturnEmptyListOfStockSymbolsNotFound() throws Exception {
+        List<String> list = this.transactionService.getUniqueStockSymbols(99);
+        assertEquals(0, list.size());
     }
 }
