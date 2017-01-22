@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +19,7 @@ public class User {
     private double balance;
     private Date created;
     private Date modified;
+    private List<Transaction> transactions;
 
     public User() {
     }
@@ -74,5 +76,13 @@ public class User {
     }
     public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

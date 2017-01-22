@@ -10,15 +10,32 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private IUserRepository repository;
+    private IUserRepository userRepository;
 
     @Autowired
-    public void setRepository(IUserRepository repository) {
-        this.repository = repository;
+    public void setUserRepository(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User create(String email){
-        return this.repository.save(new User(email));
+        return this.userRepository.save(new User(email));
+    }
+
+    public User update(User user){
+        return this.userRepository.save(user);
+    }
+
+    public User findUserById(int id){
+        Optional<User> oUser = Optional.ofNullable(this.userRepository.findOne(id));
+        if(oUser.isPresent()) {
+            return oUser.get();
+        }else{
+            throw new IllegalArgumentException("User ID not found");
+        }
+    }
+
+    public Iterable<User> findAll(){
+        return this.userRepository.findAll();
     }
 
     public double changeFunds(int id, double amount, Funds funds){
@@ -26,16 +43,7 @@ public class UserService {
         double balance = user.getBalance();
         balance = funds == Funds.DEPOSIT ? balance + amount : balance - amount;
         user.setBalance(balance);
-        this.repository.save(user);
+        this.userRepository.save(user);
         return balance;
-    }
-
-    public User findUserById(int id){
-        Optional<User> oUser = Optional.ofNullable(this.repository.findOne(id));
-        if(oUser.isPresent()) {
-            return oUser.get();
-        }else{
-            throw new IllegalArgumentException("User ID not found");
-        }
     }
 }

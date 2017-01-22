@@ -56,7 +56,7 @@ public class UserServiceTest {
     @Test
     public void shouldDepositFunds() throws Exception {
         double balance = this.service.changeFunds(1, 50, Funds.DEPOSIT);
-        assertEquals(50, balance, 0.1);
+        assertEquals(60, balance, 0.1);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -68,7 +68,7 @@ public class UserServiceTest {
     public void shouldWithdrawFunds() throws Exception {
         this.service.changeFunds(1, 100, Funds.DEPOSIT);
         double balance = this.service.changeFunds(1, 25, Funds.WITHDRAW);
-        assertEquals(75, balance, 0.1);
+        assertEquals(85, balance, 0.1);
     }
 
     @Test(expected = org.springframework.transaction.TransactionSystemException.class)

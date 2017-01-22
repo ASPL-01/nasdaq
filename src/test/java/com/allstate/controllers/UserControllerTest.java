@@ -110,7 +110,7 @@ public class UserControllerTest {
         when(this.service.changeFunds(1, 50.0, Funds.DEPOSIT)).thenReturn(250.0);
 
         // request
-        MockHttpServletRequestBuilder request = post("/users/1/deposit/50");
+        MockHttpServletRequestBuilder request = put("/users/1/deposit/50");
 
         // assertion
         this.mvc.perform(request)
@@ -122,7 +122,7 @@ public class UserControllerTest {
     @Test
     public void shouldNotDepositFundsNotAnId() throws Exception {
         // request
-        MockHttpServletRequestBuilder request = post("/users/bad/deposit/50");
+        MockHttpServletRequestBuilder request = put("/users/bad/deposit/50");
 
         // assertion
         this.mvc.perform(request)
@@ -133,7 +133,7 @@ public class UserControllerTest {
     @Test
     public void shouldNotDepositFundsNotAnAmount() throws Exception {
         // request
-        MockHttpServletRequestBuilder request = post("/users/1/deposit/bad");
+        MockHttpServletRequestBuilder request = put("/users/1/deposit/bad");
 
         // assertion
         this.mvc.perform(request)
@@ -147,7 +147,7 @@ public class UserControllerTest {
         when(this.service.changeFunds(1, 50.0, Funds.WITHDRAW)).thenReturn(15.0);
 
         // request
-        MockHttpServletRequestBuilder request = post("/users/1/withdraw/50");
+        MockHttpServletRequestBuilder request = put("/users/1/withdraw/50");
 
         // assertion
         this.mvc.perform(request)
